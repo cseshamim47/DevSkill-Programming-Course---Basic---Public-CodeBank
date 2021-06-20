@@ -21,7 +21,7 @@ int getMax()
 void insertIn(int v)
 {
     tree.push_back(v);
-    int currIdx = tree.size();
+    int currIdx = tree.size()-1;
     while(currIdx > 1 && tree[getParent(currIdx)] < tree[currIdx])
     {
         swap(tree[getParent(currIdx)], tree[currIdx]);
@@ -32,23 +32,25 @@ void insertIn(int v)
 /// TC: O(logN)
 void popMax()
 {
-    int sz = tree.size();
+    int sz = tree.size()-1;
     swap(tree[1], tree[sz]);
-    --sz;
-    int currIdx = 1;
-    while(currIdx <= sz)
+    tree.pop_back();
+    sz = tree.size()-1;
+    int Lsearch = 1;
+    int Rsearch = 1;
+    while(true)
     {
         /// left check ; 2*currIdx
-        if((2*currIdx <= sz) && tree[currIdx] < tree[2 * currIdx])
+        if((2*Lsearch <= sz) && tree[Lsearch] < tree[2 * Lsearch])
         {
-            swap(tree[currIdx], tree[2 * currIdx]);
-            currIdx = 2 * currIdx;
+            swap(tree[Lsearch], tree[2 * Lsearch]);
+            Lsearch = 2 * Lsearch;
         }
         /// right check ; 2*currIdx + 1
-        else if((2*currIdx + 1 <= sz) && tree[currIdx] < tree[(2*currIdx) + 1])
+        else if((2*Rsearch + 1 <= sz) && tree[Rsearch] < tree[(2*Rsearch) + 1])
         {
-            swap(tree[currIdx], tree[(2 * currIdx) + 1]);
-            currIdx = (2 * currIdx) + 1;
+            swap(tree[Rsearch], tree[(2 * Rsearch) + 1]);
+            Rsearch = (2 * Rsearch) + 1;
         }
         else break;
     }
